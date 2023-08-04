@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import springbook.user.domain.User;
 
-public class UserDao {
+public class UserDaoJdbc implements UserDao{
 	private JdbcTemplate jdbcTemplate;
 	
 	public void setDataSource(DataSource dataSource) {
@@ -35,7 +35,7 @@ public class UserDao {
 				}
 			};
 
-	public void add(User user) throws SQLException {
+	public void add(User user) {
 		this.jdbcTemplate.update("insert into users(id, name, password) values(?,?,?)",
 				user.getId(), user.getName(), user.getPassword() );
 	}
@@ -45,7 +45,7 @@ public class UserDao {
 				new Object[] {id}, this.userMapper);
 	}
 	
-	public void deleteAll() throws SQLException {
+	public void deleteAll() {
 		this.jdbcTemplate.update(
 				new PreparedStatementCreator() {
 						@Override
@@ -56,7 +56,7 @@ public class UserDao {
 				);
 	}
 
-	public int getCount() throws SQLException {
+	public int getCount() {
 		return this.jdbcTemplate.queryForInt("select count(*) from users");
 	}
 
